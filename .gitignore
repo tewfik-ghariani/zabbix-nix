@@ -1,0 +1,14 @@
+
+
+syntax: glob
+.idea
+*egg-info
+*.log
+*.txt
+*.pyc
+*.swp
+*.csv
+*.out
+*.tar
+*.bkp
+*~
