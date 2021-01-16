@@ -115,6 +115,34 @@ _Output_
 nixops info -d test-deployment
 ```
 
+```
+$ nixops info -d zabbix-nix
+Network name: zabbix-nix
+Network UUID: 5db2c712-55e2-11eb-b862-41088537904a
+Network description: Zabbix default NixOS
+Nix expressions: /data/zabbix-nix/network.nix
+Nix path: -I global_creds=/data/keys/zabbix
+Nix arguments: region = "eu-central-1", zone = "eu-central-1a", vpcId = "vpc-abcdef", subnetId = "subnet-5381923", subnetIds = [ "subnet-123351a" "subnet-a12314314" ], dnsZoneName = "nixops.com", dnsName = "zabbix.nixops.com"
+
++-----------------------------+-----------------+-----------------------------------+-------------------------------------------------------------------------+---------------+
+| Name                        |      Status     | Type                              | Resource Id                                                             | IP address    |
++-----------------------------+-----------------+-----------------------------------+-------------------------------------------------------------------------+---------------+
+| zabbix-default-hosted-zone  |        Up       | aws-route53-hosted-zone           | /hostedzone/Z089234OZDBDWURI5SN8                                        |               |
+| zabbix-default-dns          |        Up       | aws-route53-recordset             | zabbix.nixops.com.                                                      |               |
+| machine                     | Up / Up-to-date | ec2 [eu-central-1a; m5.large]     | i-0f4eg4ga1d2fbce2c                                                     | 18.198.11.158 |
+| zabbix-default-keypair      |        Up       | ec2-keypair [eu-central-1]        | charon-91233712-55e2-11eb-b862-41088537904a-zabbix-default-keypair      |               |
+| zabbix-default-rds-db       |        Up       | ec2-rds-dbinstance [eu-central-1] | zabbix-default                                                          |               |
+| zabbix-default-agent-sg     |        Up       | ec2-security-group [eu-central-1] | zabbix-default-agent                                                    |               |
+| zabbix-default-https-sg     |        Up       | ec2-security-group [eu-central-1] | zabbix-default-https                                                    |               |
+| zabbix-default-rds-sg       |        Up       | ec2-security-group [eu-central-1] | zabbix-default-rds-db                                                   |               |
+| zabbix-default-ssh-sg       |        Up       | ec2-security-group [eu-central-1] | zabbix-default-ssh                                                      |               |
+| zabbix-default-eipv4        |        Up       | elastic-ip [eu-central-1]         | eipalloc-07g65f23                                                       |               |
+| zabbix-default-role         |        Up       | iam-role                          | charon-91233712-55e2-11eb-b862-41088537904a-zabbix-default-role         |               |
+| zabbix-default-subnet-group |        Up       | rds-subnet-group                  | nixops-91233712-55e2-11eb-b862-41088537904a-zabbix-default-subnet-group |               |
++-----------------------------+-----------------+-----------------------------------+-------------------------------------------------------------------------+---------------+
+```
+
+
 ## Remarks
 
 - `subnetId` must exist in the `zone` specified

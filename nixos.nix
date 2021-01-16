@@ -35,7 +35,7 @@
       networking.firewall.allowedTCPPorts = [ 80 443 ];
 
       environment.systemPackages =
-         with pkgs; [ vim mysql psql python3 awscli htop ];
+         with pkgs; [ vim mysql postgresql python3 awscli htop ];
 
 
       deployment.keys = {
