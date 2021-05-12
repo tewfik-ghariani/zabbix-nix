@@ -37,7 +37,46 @@
     {
 
       environment.etc."zabbix/zabbix-email.sh".source = emailScript;
+/*
+        path = with pkgs; [ mysql postgresql ];
+        serviceConfig.Type = "oneshot";
+        script = ''
+         echo "Initializing Zabbix DB"
 
+
+         if [[ "${rdsEngine}" == "psql" ]]
+         then
+           echo "Postgres Database initialization is not supported yet."
+         fi
+       '';
+      };
+
+
+      systemd.services.zabbix-server.preStart.apply = ''
+        # DB Params
+        db_user="${resources.rdsDbInstances."zabbix-${zabbixServer}-rds-db".masterUsername}"
+        db_pwd="$(cat /run/keys/zabbix-${zabbixServer}-pwd)"
+        db_host="${resources.rdsDbInstances."zabbix-${zabbixServer}-rds-db".endpoint}"
+        db_name="${resources.rdsDbInstances."zabbix-${zabbixServer}-rds-db".dbName}"
+        if [[ "${rdsEngine}" == "mysql"  ]]
+        then
+          echo "Mysql Database"
+          db_tables=$(mysql -u $db_user --password=$db_pwd -h $db_host -e "USE $db_name; SHOW tables;" | wc -l)
+          if [[ $db_tables == 0 ]]
+          then
+            echo "Importing inital schemas"
+            # echo ${pkgs.zabbix}
+            #ls -l ${pkgs.zabbix}/share/zabbix/database/mysql
+            cat ${pkgs.zabbix}/share/zabbix/database/mysql/schema.sql | ${pkgs.mysql}/bin/mysql -u $db_user --password=$db_pwd -h $db_host
+            cat ${pkgs.zabbix}/share/zabbix/database/mysql/images.sql | ${pkgs.mysql}/bin/mysql -u $db_user --password=$db_pwd -h $db_host
+            cat ${pkgs.zabbix}/share/zabbix/database/mysql/data.sql | ${pkgs.mysql}/bin/mysql -u $db_user --password=$db_pwd -h $db_host
+          else
+            echo "Tables already exist."
+          fi
+        fi
+      '';
+      systemd.services.zabbix-server.wants = lib.mkOverride 0 [ "init-db" ];
+*/
       services.zabbixServer = {
         enable = true;
         database = {
